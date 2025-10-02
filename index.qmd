@@ -1,0 +1,617 @@
+---
+title: "The Awesome Analytic Power of Graphs"
+authors:
+  - Keith McNulty & Rachel Ramsay, McKinsey & Company
+format: 
+  revealjs:
+    theme: ["pp.scss"]
+    slide-number: c/t
+    incremental: false
+    highlight-style: github
+    title-slide-attributes:
+      data-background-image: img/SIOP-cover-background.png
+      data-background-size: cover 
+    auto-animate-easing: ease-in-out 
+editor: source
+---
+
+
+# What are graph databases? {background-image="img/SIOP-section-background.png" background-size="cover"}
+
+And why should we use them?
+
+## Traditional databases {background-image="img/SIOP-darkred-background.png" background-size="cover"}
+
+Traditional (SQL) databases store data in tables with rows and columns, in order to be efficient at indexing **records**.  For example, if we want to get all employees currently in a given department, we might run a query like this:
+
+```
+SELECT departmentCode, employeeId
+FROM employee_table
+WHERE departmentCode = 12546
+AND recordDate = '2025-10-24';
+```
+
+and this might return something like:
+
+```{r}
+(example <- data.frame(
+  departmentCode = c(12546, 12546, 12546, 12546, 12546),
+  employeeId = c(1000345, 1001465, 1002698, 1007365, 1001656)
+))
+```
+
+
+<div style="background: url(img/trad-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 75px;
+                        height: 75px;"></div>
+
+## Limitations of traditional databases  {background-image="img/SIOP-brightred-background.png" background-size="cover"}
+
+Database querying can be complex and inefficient when you are interested in **relationships** in your data. For example, if you wanted to find pairs of related employees based on whether they have worked in the same department at any time in the past, the SQL might look something like:
+
+```
+SELECT DISTINCT t1.employeeId, t2.employeeId, t1.departmentCode
+FROM (
+  SELECT departmentCode, employeeId, recordDate
+  FROM employee_table
+) t1, (
+  SELECT departmentCode, employeeId, recordDate
+  FROM employee_table
+) t2
+WHERE t1.departmentCode = t2.departmentCode
+AND t1.employeeId <> t2.employeeId
+AND t1.recordDate = t2.recordDate;
+```
+
+This is still quite simple, but onerous to perform using traditional SQL queries.  More complex queries on relationships can be even more difficult to write and execute.
+
+<div style="background: url(img/trad-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 75px;
+                        height: 75px;"></div>
+
+
+
+## Graph databases {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+:::rows
+:::row
+:::column
+
+If you are performing a lot of analysis on relationships between entities, you
+should transform your data and store it in a graph database.</p>  
+
+Graph databases store data as **nodes** (entities) and **edges** (relationships between entities).
+Using the Cypher graph query language as an example, the previous query would now look like:
+:::
+
+:::column
+<br>
+```{r, out.height = "200px", out.width = "300px"}
+#| echo: FALSE
+
+library(igraph)
+library(ggraph)
+
+edgelist <- data.frame(
+  from = c("e1", "e2"),
+  to = c("d", "d")
+)
+
+example_graph <- igraph::graph_from_data_frame(edgelist, directed = TRUE)
+
+V(example_graph)$color <- ifelse(
+  V(example_graph)$name %in% c("e1", "e2"), "lightblue", "pink"
+)
+
+V(example_graph)$type <- ifelse(V(example_graph)$name %in% c("e1", "e2"),
+                          "Employee", 
+                          "Department")
+
+
+
+# more visible edges 
+E(example_graph)$width <- 3
+E(example_graph)$label <- "WORKED_IN -->"
+
+set.seed(123)
+
+ggraph(example_graph, layout = "eigen") +
+  geom_edge_link(aes(label = label), 
+                 angle_calc = 'along',
+                 label_dodge = unit(2.5, 'mm'),
+                 arrow = arrow(length = unit(4, 'mm')), 
+                 end_cap = circle(3, 'mm'), 
+                 label_size = 6) + 
+  geom_node_point(aes(color = as.factor(type)), size = 20, 
+                  show.legend = FALSE) +
+  labs(color = "Type") +
+  ylim(-1, 1) +
+  xlim(-1, 1) +
+  geom_node_text(aes(label = paste0(name, ": ", type)), nudge_y = -0.2, size = 6) +
+  theme_void()
+```
+:::
+:::
+
+::: row
+
+
+```
+MATCH (e1:Employee)-[r1:WORKED_IN]->(d:Department)<-[r2:WORKED_IN]-(e2:Employee)
+WHERE e1.employeeId <> e2.employeeId 
+AND r1.recordDate = r2.recordDate
+RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;
+```
+:::
+:::
+
+
+
+
+<div style="background: url(img/graph-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 100px;
+                        height: 100px;"></div>
+                        
+
+## Put simply... {background-image="img/SIOP-lightgrey-background.png" background-size="cover" auto-animate=true}
+
+::: columns
+
+::: column
+<center>
+If this is a traditional database...
+
+![](img/relational-flowers.jpg){height=400 fig-align="center"}
+</center>
+:::
+
+:::column
+::: {.fragment}
+<center>
+...then this is a graph database.
+
+![](img/graph-flowers.jpg){height=400 fig-align="center"}
+</center>
+:::
+:::
+
+:::
+
+<div style="background: url(img/graph-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 100px;
+                        height: 100px;"></div>
+
+
+
+## Example technologies {background-image="img/SIOP-darkred-background.png" background-size="cover" auto-animate=true}
+
+::: columns
+
+::: column
+
+<center>
+Labeled Property Graph (LPG):
+
+![](img/lpgs.png){height=400 fig-align="center"}
+</center>
+
+
+::: 
+
+::: column
+::: {.fragment}
+
+<center>
+Resource Description Framework (RDF):
+
+![](img/rdfs.png){height=400 fig-align="center"}
+</center>
+:::
+:::
+
+:::
+
+<div style="background: url(img/graph-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 100px;
+                        height: 100px;"></div>
+                        
+## Typical graph data sources {background-image="img/SIOP-brightred-background.png" background-size="cover"}  
+
+::: columns
+
+::: column
+::: {.incremental}
+* **HR data** (e.g., org structure, roles, skills)
+* **Billing/financial data** (e.g., time billed on projects)
+* **Communications metadata** (e.g., calendar, email)
+* **Skills and competencies** (e.g., from HR systems, resumés, certifications, learning platforms)
+* **Document Authorship** (e.g., who wrote what, when, with whom)
+* **Semantic/similarity relationships** (e.g., job title similarity, skill similarity)
+:::
+:::
+
+::: column
+<br><br>
+![](img/general-network.png){width=400 fig-align="center"}
+:::
+
+:::
+     
+<div style="background: url(img/graph-database.png) no-repeat center center;
+                        background-size: cover;
+                        position: absolute;
+                        top: 5px;
+                        right: 55px;
+                        width: 100px;
+                        height: 100px;"></div>
+                        
+                        
+# Graph DBs in the wild {background-image="img/SIOP-section-background.png" background-size="cover"}
+
+A very quick overview of scaled use cases
+
+## Professional network management {background-image="img/SIOP-darkred-background.png" background-size="cover" auto-animate=false}
+
+::: columns
+
+::: column
+::: {.muchsmallertext}
+* Increasingly in large organizations, people want to manage their networks proactively (e.g., to find colleagues with similar skills and interests, to identify mentors or mentees)
+* External networks like *LinkedIn* are less effective at internal network building
+* Graph databases can be used to build internal professional networks that are helpful career development tools for employees
+* Colleagues can get recommendations for people to connect with based on 
+  - prior collaborations
+  - super-connectors (high centrality/high influence individuals)
+  - connections they have in common
+  - skill similarity
+  - biographical similarity (eg common *alma mater*)
+  - ...
+:::
+:::
+
+
+::: column
+<br><br>
+<center>
+![](img/second-order-network.png){width=300 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+## Development and evaluation {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+
+* Algorithmically suggesting references during evaluation cycles based on collaboration data
+* Formally measuring network size/centrality as part of leadership development
+* Actively tracking and measuring leadership responsibilities such as mentorship and sponsorship of more junior colleagues
+* Identifying potential succession candidates based on network position and skill similarity
+
+:::
+
+::: column
+<br><br><br>
+<center>
+![](img/global-network.png){width=500 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+
+## Skills  {background-image="img/SIOP-lightgrey-background.png" background-size="cover"}
+
+
+::: columns
+
+::: column
+::: {.smallertext}
+
+* Relating skills to each other through semantic similarity and co-occurrence in resumes and other documents
+* Relating skills, qualifications, and credentials to employees 
+* Identifying skill gaps in teams and organizations
+* Supporting learning through suggesting areas for relevant skill development
+* Helping recruiters divert candidates to similar job openings based on skills
+* Suggesting relevant roles on recruiting websites/portals
+:::
+:::
+
+::: column
+<br>
+<center>
+![](img/skill-graph.png){width=500 fig-align="center"}
+</center>
+:::
+:::
+
+
+## Organizational Design  {background-image="img/SIOP-darkred-background.png" background-size="cover"}
+
+
+::: columns
+
+::: column
+::: {.smallertext}
+* Identifying informal networks and communities of practice within organizations
+* Determining key influencers and community connectors
+* Identifying potential bottlenecks and single points of failure in communication networks
+* Understanding collaboration patterns across teams and functions
+* Supporting organizational redesign efforts by simulating changes to org structure and reporting lines
+:::
+:::
+
+::: column
+<br>
+<center>
+![](img/org-design.gif){width=400 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+# A recent graph breakthrough {background-image="img/SIOP-section-background.png" background-size="cover"}
+
+A simulation of how we solved the question of time use
+
+## The problem {background-image="img/SIOP-darkred-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+
+**Common questions that people ask in professional services firms:**
+
+* How did I spend my time across different types of activities?
+
+* How did I spend my time across different billable projects?
+
+* Am I creating apprenticeship opportunities for junior colleagues in my projects?
+
+:::
+
+::: column
+<center>
+![](img/hard-problem.webp){width=400 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+## The calendar mystery {background-image="img/SIOP-brightred-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+::: {.smallertext}
+
+**Only I understand the context of my calendar:**
+
+* Calendar entries are often not very specific (e.g., "Meeting", "Catch-up", "Weekly sync")
+* When I read my calendar I understand the context, but others do not
+* "Meeting with Keith" + "Keith and I only work on Project X" -> "Meeting about Project X"
+
+**Is there a way we can infer this context algorithmically?**
+:::
+:::
+
+::: column
+<center>
+![](img/basic-calendar.png){width=400 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+## What do we know? {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+<br>
+Here is an internal meeting with three attendees.  We can determine this information from the calendar metadata.
+
+We have no idea what the meeting is about.
+:::
+
+::: column
+<center>
+![](img/three-person-meeting.svg){width=600 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+## Let's add info from other systems... {background-image="img/SIOP-lightgrey-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+<br>
+Let's add information from a system which tracks what projects people are working on around the date of the meeting.
+
+This suggests we might be able to infer the meeting context, but it's not definitive.
+:::
+
+::: column
+<center>
+![](img/add-project-data.svg){width=600 fig-align="center"}
+</center>
+:::
+
+:::
+
+## ...and now revisit the calendar metadata {background-image="img/SIOP-lightgrey-background.png" background-size="cover"}
+
+::: columns
+
+::: column
+<br>
+Maybe there were meetings around the same time that had external attendees too?
+
+Could the email domains of those attendees tell us something useful?
+:::
+
+::: column
+<center>
+![](img/add-externals.svg){width=600 fig-align="center"}
+</center>
+:::
+
+:::
+
+
+## Now look at the surrounding time period {background-image="img/SIOP-darkred-background.png" background-size="cover"}
+
+::: columns
+
+::: column 
+::: {.incremental}
+
+
+* Jim and Pam have been in 6 meetings together recently that had a Sabre attendee.
+* Jim and Dwight have had 4 recent meetings together with a Sabre attendee, and 5 meetings where Dunder Mifflin was present.
+* Pam and Dwight have met 9 times together recently, and all meetings had a Sabre attendee.
+
+:::
+:::
+
+::: column
+<center>
+![](img/pair-meetings.svg){width=600 fig-align="center"}
+</center>
+:::
+
+:::
+
+## This allows us to infer the meeting purpose {background-image="img/SIOP-brightred-background.png" background-size="cover"}
+
+::: columns
+
+::: column 
+:::{.incremental}
+
+* Sabre: 3 pairs, 19 meetings
+* Dunder Mifflin: 1 pair, 5 meetings
+* High likelihood that this meeting was about Sabre
+
+:::
+
+:::
+
+::: column
+<center>
+![](img/final-graph.svg){width=600 fig-align="center"}
+</center>
+:::
+
+:::
+
+## Scaled reporting of time use statistics {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+
+:::columns
+
+
+:::column
+
+<br><br><br><br>
+How did I spend my time across different types of activities?
+
+:::
+
+:::column
+<center>
+
+![](img/time-spread.png){width=600 fig-align="center"}
+
+</center>
+
+:::
+:::
+
+
+
+## Scaled reporting of time use statistics {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+
+:::columns
+
+
+:::column
+
+<br><br><br><br>
+How did I spend my time across different projects?
+
+:::
+
+:::column
+<center>
+<br>
+![](img/project-view.png){width=600 fig-align="center"}
+
+</center>
+
+:::
+:::
+
+
+## Scaled reporting of time use statistics {background-image="img/SIOP-darkgrey-background.png" background-size="cover"}
+
+
+:::columns
+
+
+:::column
+
+<br><br><br>
+Am I creating apprenticeship opportunities for junior colleagues in my projects?
+
+
+:::
+
+:::column
+<center>
+<br>
+![](img/apprenticeship-view.png){width=600 fig-align="center"}
+
+</center>
+
+:::
+:::
+
+
+# Thank you for listening {background-image="img/SIOP-section-background.png" background-size="cover"}
+
+## End
+
+
+
