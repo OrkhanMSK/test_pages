@@ -1,179 +1,257 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<script src="index_files/libs/clipboard/clipboard.min.js"></script>
-<script src="index_files/libs/quarto-html/tabby.min.js"></script>
-<script src="index_files/libs/quarto-html/popper.min.js"></script>
-<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.32">
+<html lang="en">
+  <head>
+    <script src="index_files/libs/clipboard/clipboard.min.js"></script>
+    <script src="index_files/libs/quarto-html/tabby.min.js"></script>
+    <script src="index_files/libs/quarto-html/popper.min.js"></script>
+    <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet" />
+    <link
+      href="index_files/libs/quarto-html/light-border.css"
+      rel="stylesheet"
+    />
+    <link
+      href="index_files/libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css"
+      rel="stylesheet"
+      id="quarto-text-highlighting-styles"
+    />
+    <meta charset="utf-8" />
+    <meta name="generator" content="quarto-1.7.32" />
 
-  <title>The Awesome Analytic Power of Graphs</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
-    }
-  </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-c22c0d7d127fc2f4a9522925c5dfb8e0.css">
-  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
-</head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
+    <title>The Awesome Analytic Power of Graphs</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css" />
+    <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css" />
+    <style>
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      div.columns {
+        display: flex;
+        gap: min(4vw, 1.5em);
+      }
+      div.column {
+        flex: auto;
+        overflow-x: auto;
+      }
+      div.hanging-indent {
+        margin-left: 1.5em;
+        text-indent: -1.5em;
+      }
+      ul.task-list {
+        list-style: none;
+      }
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */
+        vertical-align: middle;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="index_files/libs/revealjs/dist/theme/quarto-c22c0d7d127fc2f4a9522925c5dfb8e0.css"
+    />
+    <link
+      href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css"
+      rel="stylesheet"
+    />
+    <link
+      href="index_files/libs/revealjs/plugin/reveal-menu/menu.css"
+      rel="stylesheet"
+    />
+    <link
+      href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css"
+      rel="stylesheet"
+    />
+    <link
+      href="index_files/libs/revealjs/plugin/quarto-support/footer.css"
+      rel="stylesheet"
+    />
+    <style type="text/css">
+      .reveal div.sourceCode {
+        margin: 0;
+        overflow: auto;
+      }
+      .reveal div.hanging-indent {
+        margin-left: 1em;
+        text-indent: -1em;
+      }
+      .reveal .slide:not(.center) {
+        height: 100%;
+      }
+      .reveal .slide.scrollable {
+        overflow-y: auto;
+      }
+      .reveal .footnotes {
+        height: 100%;
+        overflow-y: auto;
+      }
+      .reveal .slide .absolute {
+        position: absolute;
+        display: block;
+      }
+      .reveal .footnotes ol {
+        counter-reset: ol;
+        list-style-type: none;
+        margin-left: 0;
+      }
+      .reveal .footnotes ol li:before {
+        counter-increment: ol;
+        content: counter(ol) ". ";
+      }
+      .reveal .footnotes ol li > p:first-child {
+        display: inline-block;
+      }
+      .reveal .slide ul,
+      .reveal .slide ol {
+        margin-bottom: 0.5em;
+      }
+      .reveal .slide ul li,
+      .reveal .slide ol li {
+        margin-top: 0.4em;
+        margin-bottom: 0.2em;
+      }
+      .reveal .slide ul[role="tablist"] li {
+        margin-bottom: 0;
+      }
+      .reveal .slide ul li > *:first-child,
+      .reveal .slide ol li > *:first-child {
+        margin-block-start: 0;
+      }
+      .reveal .slide ul li > *:last-child,
+      .reveal .slide ol li > *:last-child {
+        margin-block-end: 0;
+      }
+      .reveal .slide .columns:nth-child(3) {
+        margin-block-start: 0.8em;
+      }
+      .reveal blockquote {
+        box-shadow: none;
+      }
+      .reveal .tippy-content > * {
+        margin-top: 0.2em;
+        margin-bottom: 0.7em;
+      }
+      .reveal .tippy-content > *:last-child {
+        margin-bottom: 0.2em;
+      }
+      .reveal .slide > img.stretch.quarto-figure-center,
+      .reveal .slide > img.r-stretch.quarto-figure-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .reveal .slide > img.stretch.quarto-figure-left,
+      .reveal .slide > img.r-stretch.quarto-figure-left {
+        display: block;
+        margin-left: 0;
+        margin-right: auto;
+      }
+      .reveal .slide > img.stretch.quarto-figure-right,
+      .reveal .slide > img.r-stretch.quarto-figure-right {
+        display: block;
+        margin-left: auto;
+        margin-right: 0;
+      }
+    </style>
+  </head>
+  <body class="quarto-light">
+    <div class="reveal">
+      <div class="slides">
+        <section
+          id="title-slide"
+          data-background-image="img/SIOP-cover-background.png"
+          data-background-size="cover"
+          class="quarto-title-block center"
+        >
+          <h1 class="title">The Awesome Analytic Power of Graphs</h1>
 
-<section id="title-slide" data-background-image="img/SIOP-cover-background.png" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">The Awesome Analytic Power of Graphs</h1>
-
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Keith McNulty &amp; Rachel Ramsay, McKinsey &amp; Company 
-</div>
-</div>
-</div>
-
-</section>
-<section>
-<section id="what-are-graph-databases" class="title-slide slide level1 center" data-background-image="img/SIOP-section-background.png" data-background-size="cover">
-<h1>What are graph databases?</h1>
-<p>And why should we use them?</p>
-</section>
-<section id="traditional-databases" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover">
-<h2>Traditional databases</h2>
-<p>Traditional (SQL) databases store data in tables with rows and columns, in order to be efficient at indexing <strong>records</strong>. For example, if we want to get all employees currently in a given department, we might run a query like this:</p>
-<pre><code>SELECT departmentCode, employeeId
+          <div class="quarto-title-authors">
+            <div class="quarto-title-author">
+              <div class="quarto-title-author-name">
+                Keith McNulty &amp; Rachel Ramsay, McKinsey &amp; Company
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <section
+            id="what-are-graph-databases"
+            class="title-slide slide level1 center"
+            data-background-image="img/SIOP-section-background.png"
+            data-background-size="cover"
+          >
+            <h1>What are graph databases?</h1>
+            <p>And why should we use them?</p>
+          </section>
+          <section
+            id="traditional-databases"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+          >
+            <h2>Traditional databases</h2>
+            <p>
+              Traditional (SQL) databases store data in tables with rows and
+              columns, in order to be efficient at indexing
+              <strong>records</strong>. For example, if we want to get all
+              employees currently in a given department, we might run a query
+              like this:
+            </p>
+            <pre><code>SELECT departmentCode, employeeId
 FROM employee_table
 WHERE departmentCode = 12546
 AND recordDate = '2025-10-24';</code></pre>
-<p>and this might return something like:</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  departmentCode employeeId
+            <p>and this might return something like:</p>
+            <div class="cell">
+              <div class="cell-output cell-output-stdout">
+                <pre><code>  departmentCode employeeId
 1          12546    1000345
 2          12546    1001465
 3          12546    1002698
 4          12546    1007365
 5          12546    1001656</code></pre>
-</div>
-</div>
-<div style="background: url(img/trad-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 75px;
-                        height: 75px;">
-
-</div>
-</section>
-<section id="limitations-of-traditional-databases" class="slide level2" data-background-image="img/SIOP-brightred-background.png" data-background-size="cover">
-<h2>Limitations of traditional databases</h2>
-<p>Database querying can be complex and inefficient when you are interested in <strong>relationships</strong> in your data. For example, if you wanted to find pairs of related employees based on whether they have worked in the same department at any time in the past, the SQL might look something like:</p>
-<pre><code>SELECT DISTINCT t1.employeeId, t2.employeeId, t1.departmentCode
+              </div>
+            </div>
+            <div
+              style="
+                background: url(img/trad-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 75px;
+                height: 75px;
+              "
+            ></div>
+          </section>
+          <section
+            id="limitations-of-traditional-databases"
+            class="slide level2"
+            data-background-image="img/SIOP-brightred-background.png"
+            data-background-size="cover"
+          >
+            <h2>Limitations of traditional databases</h2>
+            <p>
+              Database querying can be complex and inefficient when you are
+              interested in <strong>relationships</strong> in your data. For
+              example, if you wanted to find pairs of related employees based on
+              whether they have worked in the same department at any time in the
+              past, the SQL might look something like:
+            </p>
+            <pre><code>SELECT DISTINCT t1.employeeId, t2.employeeId, t1.departmentCode
 FROM (
   SELECT departmentCode, employeeId, recordDate
   FROM employee_table
@@ -184,411 +262,866 @@ FROM (
 WHERE t1.departmentCode = t2.departmentCode
 AND t1.employeeId &lt;&gt; t2.employeeId
 AND t1.recordDate = t2.recordDate;</code></pre>
-<p>This is still quite simple, but onerous to perform using traditional SQL queries. More complex queries on relationships can be even more difficult to write and execute.</p>
-<div style="background: url(img/trad-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 75px;
-                        height: 75px;">
-
-</div>
-</section>
-<section id="graph-databases" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>Graph databases</h2>
-<div class="rows">
-<div class="row">
-<div class="column">
-If you are performing a lot of analysis on relationships between entities, you should transform your data and store it in a graph database.
-<p></p>
-<p>Graph databases store data as <strong>nodes</strong> (entities) and <strong>edges</strong> (relationships between entities). Using the Cypher graph query language as an example, the previous query would now look like:</p>
-</div><div class="column">
-<p><br></p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png" width="300" height="200"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-<div class="row">
-<pre><code>MATCH (e1:Employee)-[r1:WORKED_IN]-&gt;(d:Department)&lt;-[r2:WORKED_IN]-(e2:Employee)
+            <p>
+              This is still quite simple, but onerous to perform using
+              traditional SQL queries. More complex queries on relationships can
+              be even more difficult to write and execute.
+            </p>
+            <div
+              style="
+                background: url(img/trad-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 75px;
+                height: 75px;
+              "
+            ></div>
+          </section>
+          <section
+            id="graph-databases"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Graph databases</h2>
+            <div class="rows">
+              <div class="row">
+                <div class="column">
+                  If you are performing a lot of analysis on relationships
+                  between entities, you should transform your data and store it
+                  in a graph database.
+                  <p></p>
+                  <p>
+                    Graph databases store data as
+                    <strong>nodes</strong> (entities) and
+                    <strong>edges</strong> (relationships between entities).
+                    Using the Cypher graph query language as an example, the
+                    previous query would now look like:
+                  </p>
+                </div>
+                <div class="column">
+                  <p><br /></p>
+                  <div class="cell">
+                    <div class="cell-output-display">
+                      <div>
+                        <figure>
+                          <p>
+                            <img
+                              data-src="index_files/figure-revealjs/unnamed-chunk-2-1.png"
+                              width="300"
+                              height="200"
+                            />
+                          </p>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <pre><code>MATCH (e1:Employee)-[r1:WORKED_IN]-&gt;(d:Department)&lt;-[r2:WORKED_IN]-(e2:Employee)
 WHERE e1.employeeId &lt;&gt; e2.employeeId 
 AND r1.recordDate = r2.recordDate
 RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
-</div>
-</div>
-<div style="background: url(img/graph-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 100px;
-                        height: 100px;">
-
-</div>
-</section>
-<section id="put-simply" class="slide level2" data-background-image="img/SIOP-lightgrey-background.png" data-background-size="cover" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Put simply…</h2>
-<div class="columns">
-<div class="column">
-<center>
-<p>If this is a traditional database…</p>
-<img data-src="img/relational-flowers.jpg" class="quarto-figure quarto-figure-center" height="400">
-</center>
-</div><div class="column">
-<div class="fragment">
-<center>
-<p>…then this is a graph database.</p>
-<img data-src="img/graph-flowers.jpg" class="quarto-figure quarto-figure-center" height="400">
-</center>
-</div>
-</div></div>
-<div style="background: url(img/graph-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 100px;
-                        height: 100px;">
-
-</div>
-</section>
-<section id="example-technologies" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">Example technologies</h2>
-<div class="columns">
-<div class="column">
-<center>
-<p>Labeled Property Graph (LPG):</p>
-<img data-src="img/lpgs.png" class="quarto-figure quarto-figure-center" height="400">
-</center>
-</div><div class="column">
-<div class="fragment">
-<center>
-<p>Resource Description Framework (RDF):</p>
-<img data-src="img/rdfs.png" class="quarto-figure quarto-figure-center" height="400">
-</center>
-</div>
-</div></div>
-<div style="background: url(img/graph-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 100px;
-                        height: 100px;">
-
-</div>
-</section>
-<section id="typical-graph-data-sources" class="slide level2" data-background-image="img/SIOP-brightred-background.png" data-background-size="cover">
-<h2>Typical graph data sources</h2>
-<div class="columns">
-<div class="column">
-<ul>
-<li class="fragment"><strong>HR data</strong> (e.g., org structure, roles, skills)</li>
-<li class="fragment"><strong>Billing/financial data</strong> (e.g., time billed on projects)</li>
-<li class="fragment"><strong>Communications metadata</strong> (e.g., calendar, email)</li>
-<li class="fragment"><strong>Skills and competencies</strong> (e.g., from HR systems, resumés, certifications, learning platforms)</li>
-<li class="fragment"><strong>Document Authorship</strong> (e.g., who wrote what, when, with whom)</li>
-<li class="fragment"><strong>Semantic/similarity relationships</strong> (e.g., job title similarity, skill similarity)</li>
-</ul>
-</div><div class="column">
-<p><br><br> <img data-src="img/general-network.png" class="quarto-figure quarto-figure-center" width="400"></p>
-</div></div>
-<div style="background: url(img/graph-database.png) no-repeat center center;
-                        background-size: cover;
-                        position: absolute;
-                        top: 5px;
-                        right: 55px;
-                        width: 100px;
-                        height: 100px;">
-
-</div>
-</section></section>
-<section>
-<section id="graph-dbs-in-the-wild" class="title-slide slide level1 center" data-background-image="img/SIOP-section-background.png" data-background-size="cover">
-<h1>Graph DBs in the wild</h1>
-<p>A very quick overview of scaled use cases</p>
-</section>
-<section id="professional-network-management" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover" data-auto-animate="false">
-<h2 data-id="quarto-animate-title">Professional network management</h2>
-<div class="columns">
-<div class="column">
-<div class="muchsmallertext">
-<ul>
-<li>Increasingly in large organizations, people want to manage their networks proactively (e.g., to find colleagues with similar skills and interests, to identify mentors or mentees)</li>
-<li>External networks like <em>LinkedIn</em> are less effective at internal network building</li>
-<li>Graph databases can be used to build internal professional networks that are helpful career development tools for employees</li>
-<li>Colleagues can get recommendations for people to connect with based on
-<ul>
-<li>prior collaborations</li>
-<li>super-connectors (high centrality/high influence individuals)</li>
-<li>connections they have in common</li>
-<li>skill similarity</li>
-<li>biographical similarity (eg common <em>alma mater</em>)</li>
-<li>…</li>
-</ul></li>
-</ul>
-</div>
-</div><div class="column">
-<br><br>
-<center>
-<img data-src="img/second-order-network.png" class="quarto-figure quarto-figure-center" width="300">
-</center>
-</div></div>
-</section>
-<section id="development-and-evaluation" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>Development and evaluation</h2>
-<div class="columns">
-<div class="column">
-<ul>
-<li>Algorithmically suggesting references during evaluation cycles based on collaboration data</li>
-<li>Formally measuring network size/centrality as part of leadership development</li>
-<li>Actively tracking and measuring leadership responsibilities such as mentorship and sponsorship of more junior colleagues</li>
-<li>Identifying potential succession candidates based on network position and skill similarity</li>
-</ul>
-</div><div class="column">
-<br><br><br>
-<center>
-<img data-src="img/global-network.png" class="quarto-figure quarto-figure-center" width="500">
-</center>
-</div></div>
-</section>
-<section id="skills" class="slide level2" data-background-image="img/SIOP-lightgrey-background.png" data-background-size="cover">
-<h2>Skills</h2>
-<div class="columns">
-<div class="column">
-<div class="smallertext">
-<ul>
-<li>Relating skills to each other through semantic similarity and co-occurrence in resumes and other documents</li>
-<li>Relating skills, qualifications, and credentials to employees</li>
-<li>Identifying skill gaps in teams and organizations</li>
-<li>Supporting learning through suggesting areas for relevant skill development</li>
-<li>Helping recruiters divert candidates to similar job openings based on skills</li>
-<li>Suggesting relevant roles on recruiting websites/portals</li>
-</ul>
-</div>
-</div><div class="column">
-<br>
-<center>
-<img data-src="img/skill-graph.png" class="quarto-figure quarto-figure-center" width="500">
-</center>
-</div></div>
-</section>
-<section id="organizational-design" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover">
-<h2>Organizational Design</h2>
-<div class="columns">
-<div class="column">
-<div class="smallertext">
-<ul>
-<li>Identifying informal networks and communities of practice within organizations</li>
-<li>Determining key influencers and community connectors</li>
-<li>Identifying potential bottlenecks and single points of failure in communication networks</li>
-<li>Understanding collaboration patterns across teams and functions</li>
-<li>Supporting organizational redesign efforts by simulating changes to org structure and reporting lines</li>
-</ul>
-</div>
-</div><div class="column">
-<br>
-<center>
-<img data-src="img/org-design.gif" class="quarto-figure quarto-figure-center" width="400">
-</center>
-</div></div>
-</section></section>
-<section>
-<section id="a-recent-graph-breakthrough" class="title-slide slide level1 center" data-background-image="img/SIOP-section-background.png" data-background-size="cover">
-<h1>A recent graph breakthrough</h1>
-<p>A simulation of how we solved the question of time use</p>
-</section>
-<section id="the-problem" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover">
-<h2>The problem</h2>
-<div class="columns">
-<div class="column">
-<p><strong>Common questions that people ask in professional services firms:</strong></p>
-<ul>
-<li><p>How did I spend my time across different types of activities?</p></li>
-<li><p>How did I spend my time across different billable projects?</p></li>
-<li><p>Am I creating apprenticeship opportunities for junior colleagues in my projects?</p></li>
-</ul>
-</div><div class="column">
-<center>
-<img data-src="img/hard-problem.webp" class="quarto-figure quarto-figure-center" width="400">
-</center>
-</div></div>
-</section>
-<section id="the-calendar-mystery" class="slide level2" data-background-image="img/SIOP-brightred-background.png" data-background-size="cover">
-<h2>The calendar mystery</h2>
-<div class="columns">
-<div class="column">
-<div class="smallertext">
-<p><strong>Only I understand the context of my calendar:</strong></p>
-<ul>
-<li>Calendar entries are often not very specific (e.g., “Meeting”, “Catch-up”, “Weekly sync”)</li>
-<li>When I read my calendar I understand the context, but others do not</li>
-<li>“Meeting with Keith” + “Keith and I only work on Project X” -&gt; “Meeting about Project X”</li>
-</ul>
-<p><strong>Is there a way we can infer this context algorithmically?</strong></p>
-</div>
-</div><div class="column">
-<center>
-<img data-src="img/basic-calendar.png" class="quarto-figure quarto-figure-center" width="400">
-</center>
-</div></div>
-</section>
-<section id="what-do-we-know" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>What do we know?</h2>
-<div class="columns">
-<div class="column">
-<p><br> Here is an internal meeting with three attendees. We can determine this information from the calendar metadata.</p>
-<p>We have no idea what the meeting is about.</p>
-</div><div class="column">
-<center>
-<img data-src="img/three-person-meeting.svg" class="quarto-figure quarto-figure-center" width="600">
-</center>
-</div></div>
-</section>
-<section id="lets-add-info-from-other-systems" class="slide level2" data-background-image="img/SIOP-lightgrey-background.png" data-background-size="cover">
-<h2>Let’s add info from other systems…</h2>
-<div class="columns">
-<div class="column">
-<p><br> Let’s add information from a system which tracks what projects people are working on around the date of the meeting.</p>
-<p>This suggests we might be able to infer the meeting context, but it’s not definitive.</p>
-</div><div class="column">
-<center>
-<img data-src="img/add-project-data.svg" class="quarto-figure quarto-figure-center" width="600">
-</center>
-</div></div>
-</section>
-<section id="and-now-revisit-the-calendar-metadata" class="slide level2" data-background-image="img/SIOP-lightgrey-background.png" data-background-size="cover">
-<h2>…and now revisit the calendar metadata</h2>
-<div class="columns">
-<div class="column">
-<p><br> Maybe there were meetings around the same time that had external attendees too?</p>
-<p>Could the email domains of those attendees tell us something useful?</p>
-</div><div class="column">
-<center>
-<img data-src="img/add-externals.svg" class="quarto-figure quarto-figure-center" width="600">
-</center>
-</div></div>
-</section>
-<section id="now-look-at-the-surrounding-time-period" class="slide level2" data-background-image="img/SIOP-darkred-background.png" data-background-size="cover">
-<h2>Now look at the surrounding time period</h2>
-<div class="columns">
-<div class="column">
-<ul>
-<li class="fragment">Jim and Pam have been in 6 meetings together recently that had a Sabre attendee.</li>
-<li class="fragment">Jim and Dwight have had 4 recent meetings together with a Sabre attendee, and 5 meetings where Dunder Mifflin was present.</li>
-<li class="fragment">Pam and Dwight have met 9 times together recently, and all meetings had a Sabre attendee.</li>
-</ul>
-</div><div class="column">
-<center>
-<img data-src="img/pair-meetings.svg" class="quarto-figure quarto-figure-center" width="600">
-</center>
-</div></div>
-</section>
-<section id="this-allows-us-to-infer-the-meeting-purpose" class="slide level2" data-background-image="img/SIOP-brightred-background.png" data-background-size="cover">
-<h2>This allows us to infer the meeting purpose</h2>
-<div class="columns">
-<div class="column">
-<ul>
-<li class="fragment">Sabre: 3 pairs, 19 meetings</li>
-<li class="fragment">Dunder Mifflin: 1 pair, 5 meetings</li>
-<li class="fragment">High likelihood that this meeting was about Sabre</li>
-</ul>
-</div><div class="column">
-<center>
-<img data-src="img/final-graph.svg" class="quarto-figure quarto-figure-center" width="600">
-</center>
-</div></div>
-</section>
-<section id="scaled-reporting-of-time-use-statistics" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>Scaled reporting of time use statistics</h2>
-<div class="columns">
-<div class="column">
-<p><br><br><br><br> How did I spend my time across different types of activities?</p>
-</div><div class="column">
-<center>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/time-spread.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-</center>
-</div></div>
-</section>
-<section id="scaled-reporting-of-time-use-statistics-1" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>Scaled reporting of time use statistics</h2>
-<div class="columns">
-<div class="column">
-<p><br><br><br><br> How did I spend my time across different projects?</p>
-</div><div class="column">
-<center>
-<p><br> <img data-src="img/project-view.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</center>
-</div></div>
-</section>
-<section id="scaled-reporting-of-time-use-statistics-2" class="slide level2" data-background-image="img/SIOP-darkgrey-background.png" data-background-size="cover">
-<h2>Scaled reporting of time use statistics</h2>
-<div class="columns">
-<div class="column">
-<p><br><br><br> Am I creating apprenticeship opportunities for junior colleagues in my projects?</p>
-</div><div class="column">
-<center>
-<p><br> <img data-src="img/apprenticeship-view.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</center>
-</div></div>
-</section></section>
-<section>
-<section id="thank-you-for-listening" class="title-slide slide level1 center" data-background-image="img/SIOP-section-background.png" data-background-size="cover">
-<h1>Thank you for listening</h1>
-
-</section>
-<section id="end" class="slide level2">
-<h2>End</h2>
-
-</section></section>
+              </div>
+            </div>
+            <div
+              style="
+                background: url(img/graph-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 100px;
+                height: 100px;
+              "
+            ></div>
+          </section>
+          <section
+            id="put-simply"
+            class="slide level2"
+            data-background-image="img/SIOP-lightgrey-background.png"
+            data-background-size="cover"
+            data-auto-animate="true"
+          >
+            <h2 data-id="quarto-animate-title">Put simply…</h2>
+            <div class="columns">
+              <div class="column">
+                <center>
+                  <p>If this is a traditional database…</p>
+                  <img
+                    data-src="img/relational-flowers.jpg"
+                    class="quarto-figure quarto-figure-center"
+                    height="400"
+                  />
+                </center>
+              </div>
+              <div class="column">
+                <div class="fragment">
+                  <center>
+                    <p>…then this is a graph database.</p>
+                    <img
+                      data-src="img/graph-flowers.jpg"
+                      class="quarto-figure quarto-figure-center"
+                      height="400"
+                    />
+                  </center>
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: url(img/graph-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 100px;
+                height: 100px;
+              "
+            ></div>
+          </section>
+          <section
+            id="example-technologies"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+            data-auto-animate="true"
+          >
+            <h2 data-id="quarto-animate-title">Example technologies</h2>
+            <div class="columns">
+              <div class="column">
+                <center>
+                  <p>Labeled Property Graph (LPG):</p>
+                  <img
+                    data-src="img/lpgs.png"
+                    class="quarto-figure quarto-figure-center"
+                    height="400"
+                  />
+                </center>
+              </div>
+              <div class="column">
+                <div class="fragment">
+                  <center>
+                    <p>Resource Description Framework (RDF):</p>
+                    <img
+                      data-src="img/rdfs.png"
+                      class="quarto-figure quarto-figure-center"
+                      height="400"
+                    />
+                  </center>
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: url(img/graph-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 100px;
+                height: 100px;
+              "
+            ></div>
+          </section>
+          <section
+            id="typical-graph-data-sources"
+            class="slide level2"
+            data-background-image="img/SIOP-brightred-background.png"
+            data-background-size="cover"
+          >
+            <h2>Typical graph data sources</h2>
+            <div class="columns">
+              <div class="column">
+                <ul>
+                  <li class="fragment">
+                    <strong>HR data</strong> (e.g., org structure, roles,
+                    skills)
+                  </li>
+                  <li class="fragment">
+                    <strong>Billing/financial data</strong> (e.g., time billed
+                    on projects)
+                  </li>
+                  <li class="fragment">
+                    <strong>Communications metadata</strong> (e.g., calendar,
+                    email)
+                  </li>
+                  <li class="fragment">
+                    <strong>Skills and competencies</strong> (e.g., from HR
+                    systems, resumés, certifications, learning platforms)
+                  </li>
+                  <li class="fragment">
+                    <strong>Document Authorship</strong> (e.g., who wrote what,
+                    when, with whom)
+                  </li>
+                  <li class="fragment">
+                    <strong>Semantic/similarity relationships</strong> (e.g.,
+                    job title similarity, skill similarity)
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <p>
+                  <br /><br />
+                  <img
+                    data-src="img/general-network.png"
+                    class="quarto-figure quarto-figure-center"
+                    width="400"
+                  />
+                </p>
+              </div>
+            </div>
+            <div
+              style="
+                background: url(img/graph-database.png) no-repeat center center;
+                background-size: cover;
+                position: absolute;
+                top: 5px;
+                right: 55px;
+                width: 100px;
+                height: 100px;
+              "
+            ></div>
+          </section>
+        </section>
+        <section>
+          <section
+            id="graph-dbs-in-the-wild"
+            class="title-slide slide level1 center"
+            data-background-image="img/SIOP-section-background.png"
+            data-background-size="cover"
+          >
+            <h1>Graph DBs in the wild</h1>
+            <p>A very quick overview of scaled use cases</p>
+          </section>
+          <section
+            id="professional-network-management"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+            data-auto-animate="false"
+          >
+            <h2 data-id="quarto-animate-title">
+              Professional network management
+            </h2>
+            <div class="columns">
+              <div class="column">
+                <div class="muchsmallertext">
+                  <ul>
+                    <li>
+                      Increasingly in large organizations, people want to manage
+                      their networks proactively (e.g., to find colleagues with
+                      similar skills and interests, to identify mentors or
+                      mentees)
+                    </li>
+                    <li>
+                      External networks like <em>LinkedIn</em> are less
+                      effective at internal network building
+                    </li>
+                    <li>
+                      Graph databases can be used to build internal professional
+                      networks that are helpful career development tools for
+                      employees
+                    </li>
+                    <li>
+                      Colleagues can get recommendations for people to connect
+                      with based on
+                      <ul>
+                        <li>prior collaborations</li>
+                        <li>
+                          super-connectors (high centrality/high influence
+                          individuals)
+                        </li>
+                        <li>connections they have in common</li>
+                        <li>skill similarity</li>
+                        <li>
+                          biographical similarity (eg common
+                          <em>alma mater</em>)
+                        </li>
+                        <li>…</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="column">
+                <br /><br />
+                <center>
+                  <img
+                    data-src="img/second-order-network.png"
+                    class="quarto-figure quarto-figure-center"
+                    width="300"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="development-and-evaluation"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Development and evaluation</h2>
+            <div class="columns">
+              <div class="column">
+                <ul>
+                  <li>
+                    Algorithmically suggesting references during evaluation
+                    cycles based on collaboration data
+                  </li>
+                  <li>
+                    Formally measuring network size/centrality as part of
+                    leadership development
+                  </li>
+                  <li>
+                    Actively tracking and measuring leadership responsibilities
+                    such as mentorship and sponsorship of more junior colleagues
+                  </li>
+                  <li>
+                    Identifying potential succession candidates based on network
+                    position and skill similarity
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <br /><br /><br />
+                <center>
+                  <img
+                    data-src="img/global-network.png"
+                    class="quarto-figure quarto-figure-center"
+                    width="500"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="skills"
+            class="slide level2"
+            data-background-image="img/SIOP-lightgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Skills</h2>
+            <div class="columns">
+              <div class="column">
+                <div class="smallertext">
+                  <ul>
+                    <li>
+                      Relating skills to each other through semantic similarity
+                      and co-occurrence in resumes and other documents
+                    </li>
+                    <li>
+                      Relating skills, qualifications, and credentials to
+                      employees
+                    </li>
+                    <li>Identifying skill gaps in teams and organizations</li>
+                    <li>
+                      Supporting learning through suggesting areas for relevant
+                      skill development
+                    </li>
+                    <li>
+                      Helping recruiters divert candidates to similar job
+                      openings based on skills
+                    </li>
+                    <li>
+                      Suggesting relevant roles on recruiting websites/portals
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="column">
+                <br />
+                <center>
+                  <img
+                    data-src="img/skill-graph.png"
+                    class="quarto-figure quarto-figure-center"
+                    width="500"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="organizational-design"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+          >
+            <h2>Organizational Design</h2>
+            <div class="columns">
+              <div class="column">
+                <div class="smallertext">
+                  <ul>
+                    <li>
+                      Identifying informal networks and communities of practice
+                      within organizations
+                    </li>
+                    <li>
+                      Determining key influencers and community connectors
+                    </li>
+                    <li>
+                      Identifying potential bottlenecks and single points of
+                      failure in communication networks
+                    </li>
+                    <li>
+                      Understanding collaboration patterns across teams and
+                      functions
+                    </li>
+                    <li>
+                      Supporting organizational redesign efforts by simulating
+                      changes to org structure and reporting lines
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="column">
+                <br />
+                <center>
+                  <img
+                    data-src="img/org-design.gif"
+                    class="quarto-figure quarto-figure-center"
+                    width="400"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section
+            id="a-recent-graph-breakthrough"
+            class="title-slide slide level1 center"
+            data-background-image="img/SIOP-section-background.png"
+            data-background-size="cover"
+          >
+            <h1>A recent graph breakthrough</h1>
+            <p>A simulation of how we solved the question of time use</p>
+          </section>
+          <section
+            id="the-problem"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+          >
+            <h2>The problem</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <strong
+                    >Common questions that people ask in professional services
+                    firms:</strong
+                  >
+                </p>
+                <ul>
+                  <li>
+                    <p>
+                      How did I spend my time across different types of
+                      activities?
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      How did I spend my time across different billable
+                      projects?
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      Am I creating apprenticeship opportunities for junior
+                      colleagues in my projects?
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/hard-problem.webp"
+                    class="quarto-figure quarto-figure-center"
+                    width="400"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="the-calendar-mystery"
+            class="slide level2"
+            data-background-image="img/SIOP-brightred-background.png"
+            data-background-size="cover"
+          >
+            <h2>The calendar mystery</h2>
+            <div class="columns">
+              <div class="column">
+                <div class="smallertext">
+                  <p>
+                    <strong
+                      >Only I understand the context of my calendar:</strong
+                    >
+                  </p>
+                  <ul>
+                    <li>
+                      Calendar entries are often not very specific (e.g.,
+                      “Meeting”, “Catch-up”, “Weekly sync”)
+                    </li>
+                    <li>
+                      When I read my calendar I understand the context, but
+                      others do not
+                    </li>
+                    <li>
+                      “Meeting with Keith” + “Keith and I only work on Project
+                      X” -&gt; “Meeting about Project X”
+                    </li>
+                  </ul>
+                  <p>
+                    <strong
+                      >Is there a way we can infer this context
+                      algorithmically?</strong
+                    >
+                  </p>
+                </div>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/basic-calendar.png"
+                    class="quarto-figure quarto-figure-center"
+                    width="400"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="what-do-we-know"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>What do we know?</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br />
+                  Here is an internal meeting with three attendees. We can
+                  determine this information from the calendar metadata.
+                </p>
+                <p>We have no idea what the meeting is about.</p>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/three-person-meeting.svg"
+                    class="quarto-figure quarto-figure-center"
+                    width="600"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="lets-add-info-from-other-systems"
+            class="slide level2"
+            data-background-image="img/SIOP-lightgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Let’s add info from other systems…</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br />
+                  Let’s add information from a system which tracks what projects
+                  people are working on around the date of the meeting.
+                </p>
+                <p>
+                  This suggests we might be able to infer the meeting context,
+                  but it’s not definitive.
+                </p>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/add-project-data.svg"
+                    class="quarto-figure quarto-figure-center"
+                    width="600"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="and-now-revisit-the-calendar-metadata"
+            class="slide level2"
+            data-background-image="img/SIOP-lightgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>…and now revisit the calendar metadata</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br />
+                  Maybe there were meetings around the same time that had
+                  external attendees too?
+                </p>
+                <p>
+                  Could the email domains of those attendees tell us something
+                  useful?
+                </p>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/add-externals.svg"
+                    class="quarto-figure quarto-figure-center"
+                    width="600"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="now-look-at-the-surrounding-time-period"
+            class="slide level2"
+            data-background-image="img/SIOP-darkred-background.png"
+            data-background-size="cover"
+          >
+            <h2>Now look at the surrounding time period</h2>
+            <div class="columns">
+              <div class="column">
+                <ul>
+                  <li class="fragment">
+                    Jim and Pam have been in 6 meetings together recently that
+                    had a Sabre attendee.
+                  </li>
+                  <li class="fragment">
+                    Jim and Dwight have had 4 recent meetings together with a
+                    Sabre attendee, and 5 meetings where Dunder Mifflin was
+                    present.
+                  </li>
+                  <li class="fragment">
+                    Pam and Dwight have met 9 times together recently, and all
+                    meetings had a Sabre attendee.
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/pair-meetings.svg"
+                    class="quarto-figure quarto-figure-center"
+                    width="600"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="this-allows-us-to-infer-the-meeting-purpose"
+            class="slide level2"
+            data-background-image="img/SIOP-brightred-background.png"
+            data-background-size="cover"
+          >
+            <h2>This allows us to infer the meeting purpose</h2>
+            <div class="columns">
+              <div class="column">
+                <ul>
+                  <li class="fragment">Sabre: 3 pairs, 19 meetings</li>
+                  <li class="fragment">Dunder Mifflin: 1 pair, 5 meetings</li>
+                  <li class="fragment">
+                    High likelihood that this meeting was about Sabre
+                  </li>
+                </ul>
+              </div>
+              <div class="column">
+                <center>
+                  <img
+                    data-src="img/final-graph.svg"
+                    class="quarto-figure quarto-figure-center"
+                    width="600"
+                  />
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="scaled-reporting-of-time-use-statistics"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Scaled reporting of time use statistics</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br /><br /><br /><br />
+                  How did I spend my time across different types of activities?
+                </p>
+              </div>
+              <div class="column">
+                <center>
+                  <div class="quarto-figure quarto-figure-center">
+                    <figure>
+                      <p>
+                        <img
+                          data-src="img/time-spread.png"
+                          class="quarto-figure quarto-figure-center"
+                          width="600"
+                        />
+                      </p>
+                    </figure>
+                  </div>
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="scaled-reporting-of-time-use-statistics-1"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Scaled reporting of time use statistics</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br /><br /><br /><br />
+                  How did I spend my time across different projects?
+                </p>
+              </div>
+              <div class="column">
+                <center>
+                  <p>
+                    <br />
+                    <img
+                      data-src="img/project-view.png"
+                      class="quarto-figure quarto-figure-center"
+                      width="600"
+                    />
+                  </p>
+                </center>
+              </div>
+            </div>
+          </section>
+          <section
+            id="scaled-reporting-of-time-use-statistics-2"
+            class="slide level2"
+            data-background-image="img/SIOP-darkgrey-background.png"
+            data-background-size="cover"
+          >
+            <h2>Scaled reporting of time use statistics</h2>
+            <div class="columns">
+              <div class="column">
+                <p>
+                  <br /><br /><br />
+                  Am I creating apprenticeship opportunities for junior
+                  colleagues in my projects?
+                </p>
+              </div>
+              <div class="column">
+                <center>
+                  <p>
+                    <br />
+                    <img
+                      data-src="img/apprenticeship-view.png"
+                      class="quarto-figure quarto-figure-center"
+                      width="600"
+                    />
+                  </p>
+                </center>
+              </div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section
+            id="thank-you-for-listening"
+            class="title-slide slide level1 center"
+            data-background-image="img/SIOP-section-background.png"
+            data-background-size="cover"
+          >
+            <h1>Thank you for listening</h1>
+          </section>
+          <section id="end" class="slide level2">
+            <h2>End</h2>
+          </section>
+        </section>
+      </div>
+      <div class="quarto-auto-generated-content" style="display: none">
+        <div class="footer footer-default"></div>
+      </div>
     </div>
-  <div class="quarto-auto-generated-content" style="display: none;">
-<div class="footer footer-default">
 
-</div>
-</div></div>
+    <script>
+      window.backupDefine = window.define;
+      window.define = undefined;
+    </script>
+    <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+    <!-- reveal.js plugins -->
+    <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+    <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+    <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+    <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+    <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
-  
+    <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+    <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+    <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+    <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+    <script>
+      window.define = window.backupDefine;
+      window.backupDefine = undefined;
+    </script>
 
-  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
+    <script>
       // Full list of configuration options available at:
       // https://revealjs.com/config/
       Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease-in-out",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
- 
+        multiplex: {
+          // Example values. To generate your own, see the socket.io server instructions.
+
+          secret: "97486ae9da9caf1c491786cc3ddb4cb0",
+          id: "cf80f1c5931557c12748d1babafbdf574acecf56c3ec319cc871a52f7af0b4c9",
+          url: "https://test-pages-jpa1.onrender.com/", // Location of socket.io server
+        },
+        // Don't forget to add the dependencies
+        // Don't forget to add the dependencies
+        dependencies: [
+          {
+            src: "/socket.io/socket.io.js",
+            async: true,
+          },
+          { src: "/master.js", async: true },
+          { src: "/client.js", async: true },
+        ],
+
+        controlsAuto: true,
+        previewLinksAuto: false,
+        pdfSeparateFragments: false,
+        autoAnimateEasing: "ease-in-out",
+        autoAnimateDuration: 1,
+        autoAnimateUnmatched: true,
+        jumpToSlide: true,
+        menu: {
+          side: "left",
+          useTextContentForMissingTitles: true,
+          markers: false,
+          loadIcons: false,
+          custom: [
+            {
+              title: "Tools",
+              icon: '<i class="fas fa-gear"></i>',
+              content:
+                '<ul class="slide-menu-items">\n<li class="slide-tool-item active" data-item="0"><a href="#" onclick="RevealMenuToolHandlers.fullscreen(event)"><kbd>f</kbd> Fullscreen</a></li>\n<li class="slide-tool-item" data-item="1"><a href="#" onclick="RevealMenuToolHandlers.speakerMode(event)"><kbd>s</kbd> Speaker View</a></li>\n<li class="slide-tool-item" data-item="2"><a href="#" onclick="RevealMenuToolHandlers.overview(event)"><kbd>o</kbd> Slide Overview</a></li>\n<li class="slide-tool-item" data-item="3"><a href="#" onclick="RevealMenuToolHandlers.togglePdfExport(event)"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class="slide-tool-item" data-item="4"><a href="#" onclick="RevealMenuToolHandlers.toggleScrollView(event)"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class="slide-tool-item" data-item="5"><a href="#" onclick="RevealMenuToolHandlers.keyboardHelp(event)"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>',
+            },
+          ],
+          openButton: true,
+        },
+        smaller: false,
+
         // Display controls in the bottom right corner
         controls: false,
 
@@ -597,20 +1130,20 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
         controlsTutorial: false,
 
         // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
+        controlsLayout: "edges",
 
         // Visibility rule for backwards navigation arrows; "faded", "hidden"
         // or "visible"
-        controlsBackArrows: 'faded',
+        controlsBackArrows: "faded",
 
         // Display a presentation progress bar
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: "c/t",
 
         // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
+        showSlideNumber: "all",
 
         // Add the current slide number to the URL hash so that reloading the
         // page/copying the URL will return you to the same slide
@@ -648,7 +1181,7 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
         rtl: false,
 
         // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
+        navigationMode: "linear",
 
         // Randomizes the order of slides each time the presentation loads
         shuffle: false,
@@ -700,7 +1233,7 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
         mouseWheel: false,
 
         // The display mode that will be used to show slides
-        display: 'block',
+        display: "block",
 
         // Hide cursor if inactive
         hideInactiveCursor: true,
@@ -712,14 +1245,14 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: "none",
 
         // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
+        transitionSpeed: "default",
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: "none",
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
@@ -740,33 +1273,45 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
+          mathjax:
+            "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js",
+          config: "TeX-AMS_HTML-full",
           tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["\\[", "\\]"]],
             balanceBraces: true,
             processEscapes: false,
             processRefs: true,
             processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
+            preview: "TeX",
+            skipTags: [
+              "script",
+              "noscript",
+              "style",
+              "textarea",
+              "pre",
+              "code",
+            ],
+            ignoreClass: "tex2jax_ignore",
+            processClass: "tex2jax_process",
           },
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [
+          QuartoLineHighlight,
+          PdfExport,
+          RevealMenu,
+          QuartoSupport,
 
           RevealMath,
           RevealNotes,
           RevealSearch,
-          RevealZoom
-        ]
+          RevealZoom,
+        ],
       });
     </script>
-    
+
     <script>
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
@@ -800,31 +1345,30 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
           });
         }
-
       })();
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
-        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-        tabsets.forEach(function(tabset) {
-          const tabby = new Tabby('#' + tabset.id);
+        const tabsets = window.document.querySelectorAll(".panel-tabset-tabby");
+        tabsets.forEach(function (tabset) {
+          const tabby = new Tabby("#" + tabset.id);
         });
         const isCodeAnnotation = (el) => {
           for (const clz of el.classList) {
-            if (clz.startsWith('code-annotation-')) {                     
+            if (clz.startsWith("code-annotation-")) {
               return true;
             }
           }
           return false;
-        }
-        const onCopySuccess = function(e) {
+        };
+        const onCopySuccess = function (e) {
           // button target
           const button = e.trigger;
           // don't keep focus
           button.blur();
           // flash "checked"
-          button.classList.add('code-copy-button-checked');
+          button.classList.add("code-copy-button-checked");
           var currentTitle = button.getAttribute("title");
           button.setAttribute("title", "Copied!");
           let tooltip;
@@ -832,13 +1376,14 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
             button.setAttribute("data-bs-toggle", "tooltip");
             button.setAttribute("data-bs-placement", "left");
             button.setAttribute("data-bs-title", "Copied!");
-            tooltip = new bootstrap.Tooltip(button, 
-              { trigger: "manual", 
-                customClass: "code-copy-button-tooltip",
-                offset: [0, -8]});
-            tooltip.show();    
+            tooltip = new bootstrap.Tooltip(button, {
+              trigger: "manual",
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8],
+            });
+            tooltip.show();
           }
-          setTimeout(function() {
+          setTimeout(function () {
             if (tooltip) {
               tooltip.hide();
               button.removeAttribute("data-bs-title");
@@ -846,62 +1391,80 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
               button.removeAttribute("data-bs-placement");
             }
             button.setAttribute("title", currentTitle);
-            button.classList.remove('code-copy-button-checked');
+            button.classList.remove("code-copy-button-checked");
           }, 1000);
           // clear code selection
           e.clearSelection();
-        }
-        const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+        };
+        const getTextToCopy = function (trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
-        }
-        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-          text: getTextToCopy
-        });
-        clipboard.on('success', onCopySuccess);
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          }
+          return codeEl.innerText;
+        };
+        const clipboard = new window.ClipboardJS(
+          ".code-copy-button:not([data-in-quarto-modal])",
+          {
             text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
-          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
-          var isInternal = (href) => {
-              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }
-          // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-          for (var i=0; i<links.length; i++) {
-            const link = links[i];
-            if (!isInternal(link.href)) {
-              // undo the damage that might have been done by quarto-nav.js in the case of
-              // links that we want to consider external
-              if (link.dataset.originalHref !== undefined) {
-                link.href = link.dataset.originalHref;
-              }
+        );
+        clipboard.on("success", onCopySuccess);
+        if (
+          window.document.getElementById("quarto-embedded-source-code-modal")
+        ) {
+          const clipboardModal = new window.ClipboardJS(
+            ".code-copy-button[data-in-quarto-modal]",
+            {
+              text: getTextToCopy,
+              container: window.document.getElementById(
+                "quarto-embedded-source-code-modal"
+              ),
+            }
+          );
+          clipboardModal.on("success", onCopySuccess);
+        }
+        var localhostRegex = new RegExp(
+          /^(?:http|https):\/\/localhost\:?[0-9]*\//
+        );
+        var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("/" + window.location.host + "/");
+        var isInternal = (href) => {
+          return (
+            filterRegex.test(href) ||
+            localhostRegex.test(href) ||
+            mailtoRegex.test(href)
+          );
+        };
+        // Inspect non-navigation links and adorn them if external
+        var links = window.document.querySelectorAll(
+          "a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)"
+        );
+        for (var i = 0; i < links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
             }
           }
+        }
         function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
           const config = {
             allowHTML: true,
             maxWidth: 500,
             delay: 100,
             arrow: false,
-            appendTo: function(el) {
-                return el.closest('section.slide') || el.parentElement;
+            appendTo: function (el) {
+              return el.closest("section.slide") || el.parentElement;
             },
             interactive: true,
             interactiveBorder: 10,
-            theme: 'light-border',
-            placement: 'bottom-start',
+            theme: "light-border",
+            placement: "bottom-start",
           };
           if (contentFn) {
             config.content = contentFn;
@@ -912,17 +1475,23 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
           if (onUntriggerFn) {
             config.onUntrigger = onUntriggerFn;
           }
-            config['offset'] = [0,0];
-            config['maxWidth'] = 700;
-          window.tippy(el, config); 
+          config["offset"] = [0, 0];
+          config["maxWidth"] = 700;
+          window.tippy(el, config);
         }
-        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-        for (var i=0; i<noterefs.length; i++) {
+        const noterefs = window.document.querySelectorAll(
+          'a[role="doc-noteref"]'
+        );
+        for (var i = 0; i < noterefs.length; i++) {
           const ref = noterefs[i];
-          tippyHover(ref, function() {
+          tippyHover(ref, function () {
             // use id or data attribute instead here
-            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-            try { href = new URL(href).hash; } catch {}
+            let href =
+              ref.getAttribute("data-footnote-href") ||
+              ref.getAttribute("href");
+            try {
+              href = new URL(href).hash;
+            } catch {}
             const id = href.replace(/^#\/?/, "");
             const note = window.document.getElementById(id);
             if (note) {
@@ -939,27 +1508,29 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
             if (cites) {
               return {
                 el,
-                cites: cites.split(' ')
+                cites: cites.split(" "),
               };
             } else {
-              return findCites(el.parentElement)
+              return findCites(el.parentElement);
             }
           } else {
             return undefined;
           }
         };
-        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-        for (var i=0; i<bibliorefs.length; i++) {
+        var bibliorefs = window.document.querySelectorAll(
+          'a[role="doc-biblioref"]'
+        );
+        for (var i = 0; i < bibliorefs.length; i++) {
           const ref = bibliorefs[i];
           const citeInfo = findCites(ref);
           if (citeInfo) {
-            tippyHover(citeInfo.el, function() {
-              var popup = window.document.createElement('div');
-              citeInfo.cites.forEach(function(cite) {
-                var citeDiv = window.document.createElement('div');
-                citeDiv.classList.add('hanging-indent');
-                citeDiv.classList.add('csl-entry');
-                var biblioDiv = window.document.getElementById('ref-' + cite);
+            tippyHover(citeInfo.el, function () {
+              var popup = window.document.createElement("div");
+              citeInfo.cites.forEach(function (cite) {
+                var citeDiv = window.document.createElement("div");
+                citeDiv.classList.add("hanging-indent");
+                citeDiv.classList.add("csl-entry");
+                var biblioDiv = window.document.getElementById("ref-" + cite);
                 if (biblioDiv) {
                   citeDiv.innerHTML = biblioDiv.innerHTML;
                 }
@@ -970,7 +1541,6 @@ RETURN DISTINCT e1.employeeId, e2.employeeId, d.departmentCode;</code></pre>
           }
         }
       });
-      </script>
-    
-
-</body></html>
+    </script>
+  </body>
+</html>
